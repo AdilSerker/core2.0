@@ -31,11 +31,18 @@ void Scene::initScene()
     shader.setUniform("Fog.maxDist", 40.0f);
     shader.setUniform("Fog.minDist", 1.0f);
     shader.setUniform("Fog.color", vec3(0.71f, 0.95f, 1.0f));
+
+    this->character = nullptr;
 }
 
 void Scene::addShape(TriangleMesh *mesh)
 {
     shapes.push_back(mesh);
+}
+
+void Scene::addChar(Character *character)
+{
+    this->character = character;
 }
 
 void Scene::compileAndLinkShader()
@@ -49,9 +56,19 @@ void Scene::render(glm::mat4 view, glm::mat4 proj)
 {
     shader.setUniform("Light.position", view * glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
     shader.setUniform("Light.intensity", vec3(0.8f, 0.8f, 0.8f));
-
+    cout << "set uniform light"
+         << "\n";
     for (std::vector<TriangleMesh *>::iterator it = shapes.begin(); it != shapes.end(); ++it)
     {
         (*it)->render(&shader, view, proj);
     }
+    cout << "terrain rendered"
+         << "\n";
+
+    if (character != nullptr)
+    {
+        character->render(&shader, view, proj);
+    }
+    cout << "char rendered"
+         << "\n";
 }

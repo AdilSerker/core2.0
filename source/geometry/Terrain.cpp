@@ -195,6 +195,13 @@ void Terrain::render(GLSLProgram *shader, glm::mat4 view, glm::mat4 proj)
 
     glBindVertexArray(vao);
 
+    // GLuint meshIndex = glGetSubroutineIndex(
+    //     shader->getHandle(),
+    //     GL_VERTEX_SHADER,
+    //     "mesh");
+
+    // glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &meshIndex);
+
     shader->setUniform("Kd", 0.1f, 0.1f, 0.1f);
     shader->setUniform("Ks", 0.9f, 0.9f, 0.9f);
     shader->setUniform("Ka", 0.1f, 0.1f, 0.1f);

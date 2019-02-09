@@ -4,6 +4,7 @@
 #include "GLSLProgram.h"
 #include "TriangleMesh.h"
 #include "Camera.h"
+#include "Character.h"
 
 class Scene
 {
@@ -14,6 +15,8 @@ private:
 
   std::vector<TriangleMesh *> shapes;
 
+  Character *character;
+
   void compileAndLinkShader();
 
 public:
@@ -22,6 +25,7 @@ public:
 
   void initScene();
   void addShape(TriangleMesh *mesh);
+  void addChar(Character *character);
   void render(glm::mat4 view, glm::mat4 proj);
 };
 

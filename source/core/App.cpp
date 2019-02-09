@@ -2,16 +2,76 @@
 
 void App::update()
 {
+	// if (!character)
+	// {
+	// 	return;
+	// }
 	const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	int WINDOW_WIDTH = mode->width / 1.5;
 	int WINDOW_HEIGHT = mode->height / 1.5;
 
-	glm::vec3 cameraPos = camera->getPosition();
+	// glm::vec3 cameraPos = camera->getPosition();
 
-	camera->setPosition(glm::vec3(cameraPos.x, ter->sample(glm::vec2(cameraPos.x, cameraPos.z)) + 2, cameraPos.z));
+	// camera->setPosition(glm::vec3(cameraPos.x, ter->sample(glm::vec2(cameraPos.x, cameraPos.z)) + 2, cameraPos.z));
 	camera->computeMatricesFromInputs(window);
 
 	glfwSetCursorPos(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	// double xpos, ypos;
+	// glfwGetCursorPos(window, &xpos, &ypos);
+	// glfwSetCursorPos(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+
+	// camera->update(xpos, ypos);
+	// float distance = glm::length(camera->target - character->getPosition());
+
+	// if (distance > 100)
+	// {
+	// 	glm::vec3 new_target = glm::normalize(character->getPosition() - camera->target) * (distance - 100);
+
+	// 	camera->target += new_target;
+	// }
+
+	// glm::vec2 direction_velocity = glm::vec2();
+	// int vel = -32768;
+	// int strafe = -32768;
+	// bool is_crouched = false;
+
+	// getInput(&direction_velocity, &vel, &strafe, &is_crouched);
+
+	// character->update_move(direction_velocity, camera->direction(), vel, strafe, is_crouched);
+}
+
+void App::getInput(glm::vec2 *direction_velocity, int *vel, int *strafe, bool *is_crouched)
+{
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		direction_velocity->y += 32768;
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		direction_velocity->x += 32768;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		direction_velocity->y -= 32768;
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		direction_velocity->x -= 32768;
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	{
+		*vel += 65535;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
+	{
+		*strafe += 65535;
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+	{
+		*is_crouched = true;
+	}
 }
 
 void App::render()
@@ -35,10 +95,21 @@ void App::init()
 	this->scene = new Scene();
 	scene->initScene();
 
-	this->ter = new Terrain(100.0f, 1024);
+	this->ter = new Terrain(300.0f, 1024);
+	this->area = new Areas();
+	area->clear();
+
 	scene->addShape(this->ter);
 
+	// this->character = new Character();
+	// cout << "char inited"
+	// 	 << "\n";
+	// character->reset_position(glm::vec2(0, 0), ter, area);
+	// cout << "char inject to scene"
+	// 	 << "\n";
 	this->camera = new Camera();
+	cout << "camera inited"
+		 << "\n";
 }
 
 void App::initWindow()
@@ -63,7 +134,7 @@ void App::initWindow()
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
 		"OpenGL template",
-		glfwGetPrimaryMonitor(),
+		NULL, // glfwGetPrimaryMonitor(),
 		NULL);
 	if (window == NULL)
 	{
@@ -95,16 +166,22 @@ void App::initWindow()
 }
 void App::run()
 {
+	cout << "run"
+		 << "\n";
 	while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		update();
+		cout << "updated"
+			 << "\n";
 		render();
+		cout << "rendered"
+			 << "\n";
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
+	cout << "close"
+		 << "\n";
 	glfwTerminate();
 }

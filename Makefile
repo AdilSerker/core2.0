@@ -25,22 +25,28 @@ dbg:
 	$(CC) $(DBG) $(SRC) $(INC) -c && make build_debug
 
 scene: source/modules/Scene.cpp
-	$(CC) $(FLAGS) $(INC) $< -c && make build
+	$(CC) $(FLAGS) $< $(INC) -c && make build
 
-camera: source/modules/Camera.cpp
-	$(CC) $(FLAGS) $(INC) $< -c && make build
+camera: source/modules/CameraOrbit.cpp
+	$(CC) $(FLAGS) $< $(INC) -c && make build
 
 app: source/core/App.cpp
-	$(CC) $(FLAGS) $(INC) $< -c && make build
+	$(CC) $(FLAGS) $< $(INC) -c && make build
 
 ter: source/geometry/Terrain.cpp
-	$(CC) $(FLAGS) $(INC) $< -c && make build
+	$(CC) $(FLAGS) $< $(INC) -c && make build
+
+char: source/character/Character.cpp
+	$(CC) $(FLAGS) $< $(INC) -c && make build
 
 build:
-	$(CC) ./*.o $(LIBS) $(INC) -o a.out
+	$(CC) ./*.o $(LIBS) -o a.out
 build_debug:
-	$(CC) ./*.o $(LIBS) $(INC) -o debug.out
+	$(CC) ./*.o $(LIBS) -o debug.out
 
 
 clean:
 	rm -rf ./*.o
+
+clean_pre:
+	rm -rf ./headers/*.gch

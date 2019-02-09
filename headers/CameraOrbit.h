@@ -10,11 +10,14 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+// #define WINDOW_WIDTH 1280
+// #define WINDOW_HEIGHT 720
 
 class CameraOrbit
 {
+  int WINDOW_WIDTH;
+  int WINDOW_HEIGHT;
+
 public:
   glm::vec3 target;
   float pitch, yaw;
