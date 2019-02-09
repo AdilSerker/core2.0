@@ -30,13 +30,16 @@ scene: source/modules/Scene.cpp
 camera: source/modules/Camera.cpp
 	$(CC) $(FLAGS) $(INC) $< -c && make build
 
+app: source/core/App.cpp
+	$(CC) $(FLAGS) $(INC) $< -c && make build
+
 ter: source/geometry/Terrain.cpp
 	$(CC) $(FLAGS) $(INC) $< -c && make build
 
 build:
 	$(CC) ./*.o $(LIBS) $(INC) -o a.out
 build_debug:
-	$(CC) ./*.o $(LIBS) $(INC) -o debug
+	$(CC) ./*.o $(LIBS) $(INC) -o debug.out
 
 
 clean:

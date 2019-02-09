@@ -195,10 +195,10 @@ void Terrain::render(GLSLProgram *shader, glm::mat4 view, glm::mat4 proj)
 
     glBindVertexArray(vao);
 
-    shader->setUniform("Kd", 0.2f, 0.2f, 0.2f);
+    shader->setUniform("Kd", 0.1f, 0.1f, 0.1f);
     shader->setUniform("Ks", 0.9f, 0.9f, 0.9f);
     shader->setUniform("Ka", 0.1f, 0.1f, 0.1f);
-    shader->setUniform("Shininess", 180.0f);
+    shader->setUniform("Shininess", 280.0f);
 
     glm::mat4 model = glm::mat4(1.0f);
     glm::mat4 mv = view * model;

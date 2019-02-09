@@ -38,7 +38,9 @@ vec3 ads( )
 
 void main() {
     float dist = abs( Position.z );
-    float fogFactor = (Fog.maxDist - dist) /
+    float fogFactor = 
+    // exp(-1.0 * dist);
+    (Fog.maxDist - dist) /
                       (Fog.maxDist - Fog.minDist);
     fogFactor = clamp( fogFactor, 0.0, 1.0 );
     vec3 shadeColor = ads();

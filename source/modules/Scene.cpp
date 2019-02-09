@@ -20,20 +20,22 @@ Scene::~Scene()
     }
 
     shapes.clear();
-    delete camera;
 }
 
 void Scene::initScene()
 {
     compileAndLinkShader();
 
-    this->camera = new Camera();
-
-    shapes.push_back(new Terrain(100.0f, 1024));
+    // shapes.push_back(new Terrain(100.0f, 512));
 
     shader.setUniform("Fog.maxDist", 80.0f);
     shader.setUniform("Fog.minDist", 1.0f);
-    shader.setUniform("Fog.color", vec3(0.5f, 0.5f, 0.5f));
+    shader.setUniform("Fog.color", vec3(0.71f, 0.95f, 1.0f));
+}
+
+void Scene::addShape(TriangleMesh *mesh)
+{
+    shapes.push_back(mesh);
 }
 
 void Scene::compileAndLinkShader()
@@ -43,23 +45,13 @@ void Scene::compileAndLinkShader()
     shader.use();
 }
 
-void Scene::setMatrices()
+void Scene::render(glm::mat4 view, glm::mat4 proj)
 {
-    camera->computeMatricesFromInputs();
-
-    view = camera->getViewMatrix();
-    projection = camera->getProjectionMatrix();
-}
-
-void Scene::render()
-{
-    setMatrices();
-
     shader.setUniform("Light.position", view * glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
     shader.setUniform("Light.intensity", vec3(0.8f, 0.8f, 0.8f));
 
     for (std::vector<TriangleMesh *>::iterator it = shapes.begin(); it != shapes.end(); ++it)
     {
-        (*it)->render(&shader, view, projection);
+        (*it)->render(&shader, view, proj);
     }
 }

@@ -1,7 +1,5 @@
 #include "Camera.h"
 #include <iostream>
-#include <GLFW/glfw3.h>
-extern GLFWwindow *window;
 
 Camera::Camera() : position(glm::vec3(0, 10, 10)),
                    horizontalAngle(M_PI),
@@ -16,11 +14,11 @@ Camera::Camera() : position(glm::vec3(0, 10, 10)),
         glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-void Camera::computeMatricesFromInputs()
+void Camera::computeMatricesFromInputs(GLFWwindow *window)
 {
     const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    int WINDOW_WIDTH = mode->width;
-    int WINDOW_HEIGHT = mode->height;
+    int WINDOW_WIDTH = mode->width / 1.5;
+    int WINDOW_HEIGHT = mode->height / 1.5;
 
     // glfwGetTime is called only once, the first time this function is called
     static double lastTime = glfwGetTime();
@@ -29,15 +27,13 @@ void Camera::computeMatricesFromInputs()
     double currentTime = glfwGetTime();
     float deltaTime = float(currentTime - lastTime);
 
-    // // Get mouse position
-    // double xpos, ypos;
-    // glfwGetCursorPos(window, &xpos, &ypos);
+    // Get mouse position
+    double xpos, ypos;
+    glfwGetCursorPos(window, &xpos, &ypos);
 
-    // // Compute new orientation
-    // horizontalAngle += mouseSpeed * float(WINDOW_WIDTH / 2 - xpos);
-    // verticalAngle += mouseSpeed * float(WINDOW_HEIGHT / 2 - ypos);
-
-    // glfwSetCursorPos(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    // Compute new orientation
+    horizontalAngle += mouseSpeed * float(WINDOW_WIDTH / 2 - xpos);
+    verticalAngle += mouseSpeed * float(WINDOW_HEIGHT / 2 - ypos);
 
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {
