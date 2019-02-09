@@ -28,7 +28,7 @@ void Scene::initScene()
 
     // shapes.push_back(new Terrain(100.0f, 512));
 
-    shader.setUniform("Fog.maxDist", 80.0f);
+    shader.setUniform("Fog.maxDist", 40.0f);
     shader.setUniform("Fog.minDist", 1.0f);
     shader.setUniform("Fog.color", vec3(0.71f, 0.95f, 1.0f));
 }

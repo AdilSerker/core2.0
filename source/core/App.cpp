@@ -35,7 +35,7 @@ void App::init()
 	this->scene = new Scene();
 	scene->initScene();
 
-	this->ter = new Terrain(100.0f, 512);
+	this->ter = new Terrain(100.0f, 1024);
 	scene->addShape(this->ter);
 
 	this->camera = new Camera();
