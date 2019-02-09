@@ -8,7 +8,7 @@ void App::update()
 
 	glm::vec3 cameraPos = camera->getPosition();
 
-	camera->setPosition(glm::vec3(cameraPos.x, ter->sample(glm::vec2(cameraPos.x, cameraPos.z)) + 2, cameraPos.z));
+	// camera->setPosition(glm::vec3(cameraPos.x, ter->sample(glm::vec2(cameraPos.x, cameraPos.z)) + 200, cameraPos.z));
 	camera->computeMatricesFromInputs(window);
 
 	glfwSetCursorPos(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -35,7 +35,7 @@ void App::init()
 	this->scene = new Scene();
 	scene->initScene();
 
-	this->ter = new Terrain(100.0f, 1024);
+	this->ter = new Terrain(5000.0f, 1024);
 	scene->addShape(this->ter);
 
 	this->camera = new Camera();

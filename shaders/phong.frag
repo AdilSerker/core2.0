@@ -39,7 +39,7 @@ vec3 ads( )
 void main() {
     float dist = abs( Position.z );
     float fogFactor = 
-    exp(-0.08 * dist);
+    exp(-0.0005 * dist);
     // (Fog.maxDist - dist) /
     //                   (Fog.maxDist - Fog.minDist);
     fogFactor = clamp( fogFactor, 0.0, 1.0 );
