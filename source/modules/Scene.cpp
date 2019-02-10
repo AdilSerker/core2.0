@@ -26,14 +26,21 @@ void Scene::initScene()
 {
     compileAndLinkShader();
 
-    shader.setUniform("Fog.maxDist", 4500.0f);
+    shader.setUniform("Fog.maxDist", 900.0f);
     shader.setUniform("Fog.minDist", 1.0f);
     shader.setUniform("Fog.color", vec3(0.71f, 0.95f, 1.0f));
+
+    this->character = nullptr;
 }
 
 void Scene::addShape(TriangleMesh *mesh)
 {
     shapes.push_back(mesh);
+}
+
+void Scene::addChar(Character *character)
+{
+    this->character = character;
 }
 
 void Scene::compileAndLinkShader()
@@ -48,8 +55,25 @@ void Scene::render(glm::mat4 view, glm::mat4 proj)
     shader.setUniform("Light.position", view * glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
     shader.setUniform("Light.intensity", vec3(0.8f, 0.8f, 0.8f));
 
+    GLuint meshIndex = glGetSubroutineIndex(
+        shader.getHandle(),
+        GL_VERTEX_SHADER,
+        "mesh");
+
+    GLuint charIndex = glGetSubroutineIndex(
+        shader.getHandle(),
+        GL_VERTEX_SHADER,
+        "character");
+
     for (std::vector<TriangleMesh *>::iterator it = shapes.begin(); it != shapes.end(); ++it)
     {
+        glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &meshIndex);
         (*it)->render(&shader, view, proj);
+    }
+
+    if (character != nullptr)
+    {
+        glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &charIndex);
+        character->render(&shader, view, proj);
     }
 }

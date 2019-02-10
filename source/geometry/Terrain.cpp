@@ -206,6 +206,7 @@ void Terrain::render(GLSLProgram *shader, glm::mat4 view, glm::mat4 proj)
     shader->setUniform("ModelViewMatrix", mv);
     shader->setUniform("NormalMatrix",
                        glm::mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2])));
+    shader->setUniform("ProjectionMatrix", proj);
     shader->setUniform("MVP", proj * mv);
 
     glDrawElements(GL_TRIANGLES, nVerts, GL_UNSIGNED_INT, 0);

@@ -1,7 +1,6 @@
 #include "CameraOrbit.h"
 
 #include <GLFW/glfw3.h>
-extern GLFWwindow *window;
 
 #define CAMERA_SPEED 0.03
 float mouseSpeed = 0.3f;
@@ -15,6 +14,10 @@ CameraOrbit::CameraOrbit()
 	distance = 300;
 
 	invert_y = -1;
+
+	const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	WINDOW_WIDTH = mode->width / 1.5;
+	WINDOW_HEIGHT = mode->height / 1.5;
 }
 
 void CameraOrbit::update(double xpos, double ypos)
@@ -39,12 +42,12 @@ glm::vec3 CameraOrbit::direction()
 	return glm::normalize(target - position());
 }
 
-glm::mat4 CameraOrbit::view_matrix()
+glm::mat4 CameraOrbit::getViewMatrix()
 {
 	return glm::lookAt(position(), target, glm::vec3(0, 1, 0));
 }
 
-glm::mat4 CameraOrbit::proj_matrix()
+glm::mat4 CameraOrbit::getProjectionMatrix()
 {
 	return glm::perspective(45.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 1.0f, 1000.0f);
 }

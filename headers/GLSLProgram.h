@@ -25,6 +25,8 @@ class GLSLProgram
 
     void setUniform(const char *name, float x, float y, float z);
 
+    void setUniform(const char *name, const glm::mat4 &m, int val);
+
     void setUniform(const char *name, const glm::vec2 &v);
 
     void setUniform(const char *name, const glm::vec3 &v);

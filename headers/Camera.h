@@ -10,7 +10,7 @@
 
 class Camera
 {
-public:
+  public:
 	Camera();
 	void computeMatricesFromInputs(GLFWwindow *window);
 	glm::mat4 getViewMatrix() const { return ViewMatrix; }
@@ -20,9 +20,9 @@ public:
 
 	void setPosition(glm::vec3 pos) { position = pos; }
 
-	glm::vec3 getDirectin() const { return direct; }
+	glm::vec3 getDirection() const { return direct; }
 
-private:
+  private:
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
 
