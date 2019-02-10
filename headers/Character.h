@@ -35,7 +35,6 @@ class Character
 	void update_move(glm::vec2 direction_velocity, glm::vec3 cam_direct, int vel, int strafe, bool is_crouched);
 
   private:
-	GLuint nVerts;
 	GLuint vao;
 
 	Trajectory *trajectory;

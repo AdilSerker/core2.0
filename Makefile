@@ -8,7 +8,7 @@ ifeq ($(findstring Darwin,$(PLATFORM)),Darwin)
 	LIBS = -L/usr/local/lib -lglfw -lGLEW -framework OpenGL
 endif
  
-FLAGS = -O3 -ffast-math -Wall
+FLAGS = -O3 -Wall #-ffast-math
 
 SRC = source/*.cpp source/**/*.cpp
 
@@ -16,7 +16,7 @@ INC = -I headers
 
 CC = g++ -std=gnu++11
 
-DBG = -g1 -rdynamic
+DBG = -g
 
 all:
 	$(CC) $(FLAGS) $(SRC) $(INC) -c && make build

@@ -2,6 +2,10 @@
 
 #include "helpers.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 glm::vec3 Trajectory::get_center_position()
 {
 	return glm::vec3(

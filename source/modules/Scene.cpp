@@ -12,6 +12,10 @@ using glm::vec3;
 #include "Teapot.h"
 #include "Terrain.h"
 
+Scene::Scene() {
+    character = nullptr;
+}
+
 Scene::~Scene()
 {
     for (std::vector<TriangleMesh *>::iterator it = shapes.begin(); it != shapes.end(); ++it)

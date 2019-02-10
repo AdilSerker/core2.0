@@ -19,10 +19,8 @@ class App
 	GLFWwindow *window;
 
 	CameraOrbit *camera;
-	// Camera *camera;
 
 	Scene *scene;
-	Terrain *ter;
 	Areas *area;
 
 	Character *character;

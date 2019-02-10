@@ -193,15 +193,19 @@ void Character::update_move(glm::vec2 direction_velocity, glm::vec3 cam_direct, 
 	trajectory->target_dir = mix_directions(trajectory->target_dir, trajectory_target_direction_new, EXTRA_DIRECTION_SMOOTH);
 
 	crouched_target = is_crouched ? 1.0 : 0.0;
-
 	crouched_amount = glm::mix(crouched_amount, crouched_target, EXTRA_CROUCHED_SMOOTH);
+
 	trajectory->update_gait(vel, crouched_amount, EXTRA_GAIT_SMOOTH);
+
 	trajectory->predict(responsive, strafe_amount, areas);
 
 	trajectory->input(ter, JOINT_NUM, &root_position, &root_rotation, joint_positions, joint_velocities);
+
+
 	trajectory->pfnn->predict(phase);
 
 	build_local_transform();
+
 	set_ik();
 
 	trajectory->post_update(&phase, areas);

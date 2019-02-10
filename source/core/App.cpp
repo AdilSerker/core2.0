@@ -29,6 +29,7 @@ void App::update()
 	bool is_crouched = false;
 
 	getInput(&direction_velocity, &vel, &strafe, &is_crouched);
+
 	character->update_move(direction_velocity, camera->direction(), vel, strafe, is_crouched);
 }
 
@@ -76,6 +77,9 @@ App::App()
 	initWindow();
 
 	character = nullptr;
+	scene = nullptr;
+	area = nullptr;
+	camera = nullptr;
 }
 
 App::~App()
@@ -91,8 +95,8 @@ void App::init()
 	this->scene = new Scene();
 	scene->initScene();
 
-	this->ter = new Terrain(5000.0f, 512);
-	scene->addShape(this->ter);
+	Terrain *ter = new Terrain(5000.0f, 512);
+	scene->addShape(ter);
 
 	this->area = new Areas();
 	area->clear();
@@ -156,8 +160,16 @@ void App::initWindow()
 
 	glEnable(GL_CULL_FACE);
 }
+
+double currentTimeInMs()
+{
+	return glfwGetTime() * 1000;
+}
+
 void App::run()
 {
+	double MS_PER_TICK = 1000 / 60;
+	double PROCESSED_TIME = currentTimeInMs();
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;
 	while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE))
@@ -170,11 +182,16 @@ void App::run()
 			printf("FPS: %i\n", nbFrames);
 			nbFrames = 0;
 			lastTime += 1.0;
+			cout << currentTime << endl;
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		update();
 		render();
+		while ((PROCESSED_TIME + MS_PER_TICK) < currentTimeInMs())
+		{
+			update();
+			PROCESSED_TIME += MS_PER_TICK;
+		}
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

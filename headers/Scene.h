@@ -11,8 +11,6 @@ class Scene
 private:
   GLSLProgram shader;
 
-  glm::mat4 model;
-
   std::vector<TriangleMesh *> shapes;
 
   Character *character;
@@ -20,7 +18,7 @@ private:
   void compileAndLinkShader();
 
 public:
-  Scene() {}
+  Scene();
   ~Scene();
 
   void initScene();

@@ -1,5 +1,9 @@
 #include "PFNN.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 using namespace Eigen;
 
 PFNN::PFNN(int pfnnmode)
@@ -178,7 +182,6 @@ void PFNN::predict(float P)
 	int pindex_0, pindex_1, pindex_2, pindex_3;
 
 	Xp = (Xp - Xmean) / Xstd;
-
 	switch (mode)
 	{
 
@@ -189,6 +192,7 @@ void PFNN::predict(float P)
 		H1 = (W1[pindex_1].matrix() * H0.matrix()).array() + b1[pindex_1];
 		ELU(H1);
 		Yp = (W2[pindex_1].matrix() * H1.matrix()).array() + b2[pindex_1];
+
 		break;
 
 	case MODE_LINEAR:
@@ -232,4 +236,5 @@ void PFNN::predict(float P)
 	}
 
 	Yp = (Yp * Ystd) + Ymean;
+
 }
