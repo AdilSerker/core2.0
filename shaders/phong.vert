@@ -29,15 +29,17 @@ void character(out vec3 position, out vec3 normal, out vec4 glVert)
     pos+=VertexWeightVal.z*joints[int(VertexWeightIds.z)]*vec4(VertexPosition,1);
     pos+=VertexWeightVal.w*joints[int(VertexWeightIds.w)]*vec4(VertexPosition,1);
     position=pos.xyz/pos.w;
+    // position = vec3( ModelViewMatrix * vec4(pos.xyz/pos.w,1.0) );
     
     vec3 norm=vec3(0);
     norm+=VertexWeightVal.x*mat3(joints[int(VertexWeightIds.x)])*VertexNormal;
     norm+=VertexWeightVal.y*mat3(joints[int(VertexWeightIds.y)])*VertexNormal;
     norm+=VertexWeightVal.z*mat3(joints[int(VertexWeightIds.z)])*VertexNormal;
     norm+=VertexWeightVal.w*mat3(joints[int(VertexWeightIds.w)])*VertexNormal;
-    normal = norm;
+    // normal = norm;
+    normal = normalize( NormalMatrix * norm);
 
-    glVert = ProjectionMatrix * ViewMatrix * vec4(position, 1.0);
+    glVert = MVP * vec4(position, 1.0);
 }
 
 subroutine( shadeModelType )
@@ -54,10 +56,6 @@ void main()
     vec3 norm;
     vec4 vert;
     shadeModel(pos, norm, vert);
-    // Position = vec3( ModelViewMatrix * vec4(VertexPosition,1.0) );
-    // Normal = normalize( NormalMatrix * VertexNormal);
-
-    // gl_Position = MVP * vec4(VertexPosition, 1.0);
 
     Position = pos;
     Normal = norm;

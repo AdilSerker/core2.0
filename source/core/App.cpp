@@ -3,6 +3,8 @@
 #include <iostream>
 using namespace std;
 
+#include "text2D.hpp"
+
 void App::update()
 {
 	const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -107,6 +109,8 @@ void App::init()
 	character->reset_position(glm::vec2(0, 0), ter, area);
 
 	this->camera = new CameraOrbit();
+
+	initText2D("./fonts/Holstein.DDS");
 }
 
 void App::initWindow()
@@ -168,34 +172,42 @@ double currentTimeInMs()
 
 void App::run()
 {
+	
 	double MS_PER_TICK = 1000 / 60;
 	double PROCESSED_TIME = currentTimeInMs();
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;
 	while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE))
 	{
-		printf("\033c");
 		double currentTime = glfwGetTime();
 		nbFrames++;
+
+		char text[256];
+		
 		if (currentTime - lastTime >= 1.0)
 		{
-			printf("FPS: %i\n", nbFrames);
+			sprintf(text,"%i fps", nbFrames );
 			nbFrames = 0;
 			lastTime += 1.0;
-			cout << currentTime << endl;
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		render();
+
 		while ((PROCESSED_TIME + MS_PER_TICK) < currentTimeInMs())
 		{
 			update();
 			PROCESSED_TIME += MS_PER_TICK;
 		}
 
+		render();
+
+		printText2D(text, 10, 10, 20);
+
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
+	
+	cleanupText2D();
 	glfwTerminate();
 }

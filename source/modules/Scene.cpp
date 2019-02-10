@@ -54,6 +54,7 @@ void Scene::compileAndLinkShader()
 
 void Scene::render(glm::mat4 view, glm::mat4 proj)
 {
+    shader.use();
     shader.setUniform("Light.position", view * glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
     shader.setUniform("Light.intensity", vec3(0.8f, 0.8f, 0.8f));
 
