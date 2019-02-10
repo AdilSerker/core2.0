@@ -54,6 +54,7 @@ void Character::render(GLSLProgram *shader, mat4 view, mat4 proj)
 
 	mat4 mv = view * model;
 	shader->setUniform("ModelViewMatrix", mv);
+
 	shader->setUniform("ProjectionMatrix", proj);
 	shader->setUniform("ViewMatrix", view);
 	shader->setUniform("MVP", proj * mv);
