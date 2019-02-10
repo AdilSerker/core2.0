@@ -26,7 +26,7 @@ void Scene::initScene()
 {
     compileAndLinkShader();
 
-    shader.setUniform("Fog.maxDist", 900.0f);
+    shader.setUniform("Fog.maxDist", 2800.0f);
     shader.setUniform("Fog.minDist", 1.0f);
     shader.setUniform("Fog.color", vec3(0.71f, 0.95f, 1.0f));
 

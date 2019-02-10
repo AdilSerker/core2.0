@@ -99,15 +99,11 @@ void App::init()
 	area->clear();
 
 	this->character = new Character();
-	// cout << "char inited"
-	// 	 << "\n";
+
 	character->reset_position(glm::vec2(0, 0), ter, area);
 	scene->addChar(character);
-	// cout << "char inject to scene"
-	// 	 << "\n";
+
 	this->camera = new CameraOrbit();
-	// cout << "camera inited"
-	// 	 << "\n";
 }
 
 void App::initWindow()
@@ -164,23 +160,16 @@ void App::initWindow()
 }
 void App::run()
 {
-	cout << "run"
-		 << "\n";
 	while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		update();
-		// cout << "updated"
-		// 	 << "\n";
 		render();
-		// cout << "rendered"
-		// 	 << "\n";
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	cout << "close"
-		 << "\n";
+
 	glfwTerminate();
 }

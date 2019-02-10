@@ -107,7 +107,7 @@ Terrain::Terrain(float size, int divs, float smax, float tmax)
         data.push_back(row);
     }
 
-    float range = (size - 1) / 4;
+    float range = (size - 1) / 3.5;
 
     srand(time(NULL));
 
@@ -195,7 +195,7 @@ void Terrain::render(GLSLProgram *shader, glm::mat4 view, glm::mat4 proj)
 
     glBindVertexArray(vao);
 
-    shader->setUniform("Kd", 0.1f, 0.1f, 0.1f);
+    shader->setUniform("Kd", 0.0f, 0.0f, 0.0f);
     shader->setUniform("Ks", 0.9f, 0.9f, 0.9f);
     shader->setUniform("Ka", 0.1f, 0.1f, 0.1f);
     shader->setUniform("Shininess", 280.0f);

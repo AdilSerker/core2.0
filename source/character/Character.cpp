@@ -38,22 +38,16 @@ glm::vec3 Character::getPosition()
 
 void Character::render(GLSLProgram *shader, mat4 view, mat4 proj)
 {
-	cout << "char render start"
-		 << "\n";
 	if (vao == 0)
 		return;
 
 	glBindVertexArray(vao);
-	cout << "vao bind"
-		 << "\n";
 
-	cout << "uniform subroutine"
-		 << "\n";
 	glUniformMatrix4fv(glGetUniformLocation(shader->getHandle(), "joints"), JOINT_NUM, GL_FALSE, (float *)joint_mesh_xform);
 
-	shader->setUniform("Kd", 0.7f, 0.8f, 0.9f);
+	shader->setUniform("Kd", 0.5f, 0.5f, 0.5f);
 	shader->setUniform("Ks", 0.9f, 0.9f, 0.9f);
-	shader->setUniform("Ka", 0.1f, 0.1f, 0.1f);
+	shader->setUniform("Ka", 0.3f, 0.3f, 0.3f);
 	shader->setUniform("Shininess", 180.0f);
 
 	mat4 model = mat4(1.0f);
@@ -64,13 +58,7 @@ void Character::render(GLSLProgram *shader, mat4 view, mat4 proj)
 	shader->setUniform("ViewMatrix", view);
 	shader->setUniform("MVP", proj * mv);
 
-	cout << "set color and mat uniforms"
-		 << "\n";
-
 	glDrawElements(GL_TRIANGLES, ntri, GL_UNSIGNED_INT, (void *)0);
-
-	cout << "glDrawElements"
-		 << "\n";
 
 	glBindVertexArray(0);
 }
@@ -163,9 +151,6 @@ void Character::load(const char *filename_v, const char *filename_t, const char 
 		joint_rest_xform[i] = glm::transpose(joint_rest_xform[i]);
 	}
 	fclose(f);
-
-	cout << "gen buffers"
-		 << "\n";
 
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
