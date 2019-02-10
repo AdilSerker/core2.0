@@ -42,12 +42,12 @@ glm::vec3 CameraOrbit::direction()
 	return glm::normalize(target - position());
 }
 
-glm::mat4 CameraOrbit::view_matrix()
+glm::mat4 CameraOrbit::getViewMatrix()
 {
 	return glm::lookAt(position(), target, glm::vec3(0, 1, 0));
 }
 
-glm::mat4 CameraOrbit::proj_matrix()
+glm::mat4 CameraOrbit::getProjectionMatrix()
 {
 	return glm::perspective(45.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 1.0f, 1000.0f);
 }

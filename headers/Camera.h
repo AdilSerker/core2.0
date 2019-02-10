@@ -20,11 +20,14 @@ class Camera
 
 	void setPosition(glm::vec3 pos) { position = pos; }
 
+	glm::vec3 getDirection() const { return direct; }
+
   private:
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
 
 	glm::vec3 position;
+	glm::vec3 direct;
 
 	float horizontalAngle;
 	float verticalAngle;

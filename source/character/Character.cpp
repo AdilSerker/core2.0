@@ -38,7 +38,7 @@ glm::vec3 Character::getPosition()
 
 void Character::render(GLSLProgram *shader, mat4 view, mat4 proj)
 {
-	cout << "render start"
+	cout << "char render start"
 		 << "\n";
 	if (vao == 0)
 		return;
@@ -46,12 +46,7 @@ void Character::render(GLSLProgram *shader, mat4 view, mat4 proj)
 	glBindVertexArray(vao);
 	cout << "vao bind"
 		 << "\n";
-	GLuint charIndex = glGetSubroutineIndex(
-		shader->getHandle(),
-		GL_VERTEX_SHADER,
-		"character");
 
-	glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &charIndex);
 	cout << "uniform subroutine"
 		 << "\n";
 	glUniformMatrix4fv(glGetUniformLocation(shader->getHandle(), "joints"), JOINT_NUM, GL_FALSE, (float *)joint_mesh_xform);
@@ -65,6 +60,8 @@ void Character::render(GLSLProgram *shader, mat4 view, mat4 proj)
 
 	mat4 mv = view * model;
 	shader->setUniform("ModelViewMatrix", mv);
+	shader->setUniform("ProjectionMatrix", proj);
+	shader->setUniform("ViewMatrix", view);
 	shader->setUniform("MVP", proj * mv);
 
 	cout << "set color and mat uniforms"

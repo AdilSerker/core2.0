@@ -10,14 +10,16 @@
 #include "Camera.h"
 #include "Terrain.h"
 
+#include "Character.h"
+
 #include "TriangleMesh.h"
 
 class App
 {
 	GLFWwindow *window;
 
-	// CameraOrbit *camera;
-	Camera *camera;
+	CameraOrbit *camera;
+	// Camera *camera;
 
 	Scene *scene;
 	Terrain *ter;

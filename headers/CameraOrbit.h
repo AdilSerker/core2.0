@@ -10,9 +10,6 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
 
-// #define WINDOW_WIDTH 1280
-// #define WINDOW_HEIGHT 720
-
 class CameraOrbit
 {
   int WINDOW_WIDTH;
@@ -33,9 +30,9 @@ public:
 
   glm::vec3 direction();
 
-  glm::mat4 view_matrix();
+  glm::mat4 getViewMatrix();
 
-  glm::mat4 proj_matrix();
+  glm::mat4 getProjectionMatrix();
 };
 
 #endif /* CAMERA_ORBIT_H */
