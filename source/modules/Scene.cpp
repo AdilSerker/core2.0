@@ -29,8 +29,6 @@ void Scene::initScene()
     shader.setUniform("Fog.maxDist", 2800.0f);
     shader.setUniform("Fog.minDist", 1.0f);
     shader.setUniform("Fog.color", vec3(0.71f, 0.95f, 1.0f));
-
-    this->character = nullptr;
 }
 
 void Scene::addShape(TriangleMesh *mesh)
@@ -71,9 +69,6 @@ void Scene::render(glm::mat4 view, glm::mat4 proj)
         (*it)->render(&shader, view, proj);
     }
 
-    if (character != nullptr)
-    {
-        glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &charIndex);
-        character->render(&shader, view, proj);
-    }
+    glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &charIndex);
+    character->render(&shader, view, proj);
 }

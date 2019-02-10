@@ -29,10 +29,7 @@ void App::update()
 	bool is_crouched = false;
 
 	getInput(&direction_velocity, &vel, &strafe, &is_crouched);
-	if (character != nullptr)
-	{
-		character->update_move(direction_velocity, camera->direction(), vel, strafe, is_crouched);
-	}
+	character->update_move(direction_velocity, camera->direction(), vel, strafe, is_crouched);
 }
 
 void App::getInput(glm::vec2 *direction_velocity, int *vel, int *strafe, bool *is_crouched)
@@ -101,9 +98,9 @@ void App::init()
 	area->clear();
 
 	this->character = new Character();
+	scene->addChar(character);
 
 	character->reset_position(glm::vec2(0, 0), ter, area);
-	scene->addChar(character);
 
 	this->camera = new CameraOrbit();
 }
@@ -130,7 +127,7 @@ void App::initWindow()
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
 		"OpenGL template",
-		glfwGetPrimaryMonitor(),
+		NULL, // glfwGetPrimaryMonitor(),
 		NULL);
 	if (window == NULL)
 	{
@@ -161,8 +158,19 @@ void App::initWindow()
 }
 void App::run()
 {
+	double lastTime = glfwGetTime();
+	int nbFrames = 0;
 	while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE))
 	{
+		printf("\033c");
+		double currentTime = glfwGetTime();
+		nbFrames++;
+		if (currentTime - lastTime >= 1.0)
+		{
+			printf("FPS: %i\n", nbFrames);
+			nbFrames = 0;
+			lastTime += 1.0;
+		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		update();
