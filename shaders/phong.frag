@@ -1,5 +1,8 @@
 #version 410
 
+subroutine void shadeModelType(out float fog, in float dist);
+subroutine uniform shadeModelType fogFactor;
+
 in vec3 Position;
 in vec3 Normal;
 
@@ -35,16 +38,24 @@ vec3 ads( )
 
     return Light.intensity * (ambient + diffuse + spec);
 }
+subroutine( shadeModelType )
+void character(out float fog, in float dist) {
+    fog = exp(-0.00025 * 250);
+}
+subroutine( shadeModelType )
+void mesh(out float fog, in float dist) {
+    fog = (Fog.maxDist - dist) /
+                      (Fog.maxDist - Fog.minDist);
+}
 
 void main() {
     float dist = abs( Position.z );
-    float fogFactor = 
-    // exp(-0.003 * dist);
-    (Fog.maxDist - dist) /
-                      (Fog.maxDist - Fog.minDist);
-    fogFactor = clamp( fogFactor, 0.0, 1.0 );
+    float fog;
+    fogFactor(fog, dist);
+    
+    fog = clamp( fog, 0.0, 1.0 );
     vec3 shadeColor = ads();
-    vec3 color = mix( Fog.color, shadeColor, fogFactor );
+    vec3 color = mix( Fog.color, shadeColor, fog );
 
     FragColor = vec4(color, 1.0);
 }

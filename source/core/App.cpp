@@ -135,7 +135,8 @@ void App::initWindow()
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
 		"OpenGL template",
-		NULL, // glfwGetPrimaryMonitor(),
+		NULL, 
+		// glfwGetPrimaryMonitor(),
 		NULL);
 	if (window == NULL)
 	{
