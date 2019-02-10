@@ -98,8 +98,6 @@ void Character::reset_position(glm::vec2 position, Terrain *ter, Areas *areas)
 void Character::load(const char *filename_v, const char *filename_t, const char *filename_p, const char *filename_r)
 {
 
-	printf("Read Character '%s %s'\n", filename_v, filename_t);
-
 	if (vbo != 0)
 	{
 		glDeleteBuffers(1, &vbo);

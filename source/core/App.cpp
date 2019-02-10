@@ -85,6 +85,8 @@ App::~App()
 {
 	delete scene;
 	delete camera;
+	delete area;
+	delete character;
 }
 
 void App::init()
@@ -128,7 +130,7 @@ void App::initWindow()
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
 		"OpenGL template",
-		NULL, // glfwGetPrimaryMonitor(),
+		glfwGetPrimaryMonitor(),
 		NULL);
 	if (window == NULL)
 	{
@@ -137,7 +139,6 @@ void App::initWindow()
 		exit(-1);
 	}
 
-	std::cout << mode->width << "x" << mode->height << "\n";
 	glfwMakeContextCurrent(window);
 
 	glewExperimental = true;
