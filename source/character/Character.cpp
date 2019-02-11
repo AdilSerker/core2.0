@@ -45,9 +45,9 @@ void Character::render(GLSLProgram *shader, mat4 view, mat4 proj)
 
 	glUniformMatrix4fv(glGetUniformLocation(shader->getHandle(), "joints"), JOINT_NUM, GL_FALSE, (float *)joint_mesh_xform);
 
-	shader->setUniform("Kd", 0.4f, 0.4f, 0.4f);
+	shader->setUniform("Kd", 0.3f, 0.3f, 0.3f);
 	shader->setUniform("Ks", 0.7f, 0.7f, 0.7f);
-	shader->setUniform("Ka", 0.1f, 0.1f, 0.1f);
+	shader->setUniform("Ka", 0.2f, 0.2f, 0.2f);
 	shader->setUniform("Shininess", 380.0f);
 
 	mat4 model = mat4(1.0f);
