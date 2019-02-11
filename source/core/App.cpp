@@ -97,7 +97,7 @@ void App::init()
 	this->scene = new Scene();
 	scene->initScene();
 
-	Terrain *ter = new Terrain(10000.0f, 512, 1800);
+	Terrain *ter = new Terrain(10000.0f, 512, 2100);
 	scene->addShape(ter);
 
 	this->area = new Areas();
