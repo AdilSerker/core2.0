@@ -37,13 +37,14 @@ void character(out vec3 position, out vec3 normal, out vec4 glVert)
     norm+=VertexWeightVal.z*mat3(joints[int(VertexWeightIds.z)])*VertexNormal;
     norm+=VertexWeightVal.w*mat3(joints[int(VertexWeightIds.w)])*VertexNormal;
 
-    normal = norm;
+    normal = normalize( NormalMatrix * norm);
 
     glVert = MVP * vec4(pos, 1.0);
 }
 
 subroutine( shadeModelType )
 void mesh(out vec3 position, out vec3 normal, out vec4 glVert) {
+
     position = vec3( ModelViewMatrix * vec4(VertexPosition,1.0) );
     normal = normalize( NormalMatrix * VertexNormal);
 
