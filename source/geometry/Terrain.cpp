@@ -83,7 +83,17 @@ float Terrain::sample(glm::vec2 pos)
     return (s0 * (1 - a0) + s1 * a0) * (1 - a1) + (s2 * (1 - a0) + s3 * a0) * a1;
 }
 
-Terrain::Terrain(float size, int divs, float smax, float tmax)
+Terrain::Terrain(float size, int divs, int range, float smax, float tmax) {
+    init(size, divs, range, smax, tmax);
+}
+
+Terrain::Terrain(float size, int divs, float smax, float tmax) {
+    int range = size / 4;
+
+    init(size, divs, range, smax, tmax);
+}
+
+void Terrain::init(float size, int divs, int range, float smax, float tmax)
 {
     std::vector<GLfloat> p(3 * (divs + 1) * (divs + 1));
     std::vector<GLfloat> n(3 * (divs + 1) * (divs + 1));
@@ -106,8 +116,6 @@ Terrain::Terrain(float size, int divs, float smax, float tmax)
         }
         data.push_back(row);
     }
-
-    float range = (size - 1) / 3.5;
 
     srand(time(NULL));
 

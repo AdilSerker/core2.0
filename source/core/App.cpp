@@ -97,7 +97,7 @@ void App::init()
 	this->scene = new Scene();
 	scene->initScene();
 
-	Terrain *ter = new Terrain(5000.0f, 512);
+	Terrain *ter = new Terrain(10000.0f, 512, 1800);
 	scene->addShape(ter);
 
 	this->area = new Areas();
@@ -106,7 +106,7 @@ void App::init()
 	this->character = new Character();
 	scene->addChar(character);
 
-	character->reset_position(glm::vec2(0, 0), ter, area);
+	character->reset_position(glm::vec2(100, 500), ter, area);
 
 	this->camera = new CameraOrbit();
 
