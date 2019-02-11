@@ -1,17 +1,72 @@
 #include "App.h"
 
+#include <iostream>
+using namespace std;
+
+#include "text2D.hpp"
+
 void App::update()
 {
 	const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	int WINDOW_WIDTH = mode->width / 1.5;
 	int WINDOW_HEIGHT = mode->height / 1.5;
 
-	glm::vec3 cameraPos = camera->getPosition();
-
-	camera->setPosition(glm::vec3(cameraPos.x, ter->sample(glm::vec2(cameraPos.x, cameraPos.z)) + 2, cameraPos.z));
-	camera->computeMatricesFromInputs(window);
-
+	double xpos, ypos;
+	glfwGetCursorPos(window, &xpos, &ypos);
 	glfwSetCursorPos(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+
+	camera->update(xpos, ypos);
+	float distance = glm::length(camera->target - character->getPosition());
+
+	if (distance > 100)
+	{
+		glm::vec3 new_target = glm::normalize(character->getPosition() - camera->target) * (distance - 100);
+
+		camera->target += new_target;
+	}
+
+	glm::vec2 direction_velocity = glm::vec2();
+	int vel = -32768;
+	int strafe = -32768;
+	bool is_crouched = false;
+
+	getInput(&direction_velocity, &vel, &strafe, &is_crouched);
+
+	character->update_move(direction_velocity, camera->direction(), vel, strafe, is_crouched);
+}
+
+void App::getInput(glm::vec2 *direction_velocity, int *vel, int *strafe, bool *is_crouched)
+{
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		direction_velocity->y += 32768;
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		direction_velocity->x += 32768;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		direction_velocity->y -= 32768;
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		direction_velocity->x -= 32768;
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	{
+		*vel += 65535;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
+	{
+		*strafe += 65535;
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+	{
+		*is_crouched = true;
+	}
 }
 
 void App::render()
@@ -22,12 +77,19 @@ void App::render()
 App::App()
 {
 	initWindow();
+
+	character = nullptr;
+	scene = nullptr;
+	area = nullptr;
+	camera = nullptr;
 }
 
 App::~App()
 {
 	delete scene;
 	delete camera;
+	delete area;
+	delete character;
 }
 
 void App::init()
@@ -35,10 +97,20 @@ void App::init()
 	this->scene = new Scene();
 	scene->initScene();
 
-	this->ter = new Terrain(100.0f, 1024);
-	scene->addShape(this->ter);
+	Terrain *ter = new Terrain(10000.0f, 512, 1800);
+	scene->addShape(ter);
 
-	this->camera = new Camera();
+	this->area = new Areas();
+	area->clear();
+
+	this->character = new Character();
+	scene->addChar(character);
+
+	character->reset_position(glm::vec2(100, 500), ter, area);
+
+	this->camera = new CameraOrbit();
+
+	initText2D("./fonts/Holstein.DDS");
 }
 
 void App::initWindow()
@@ -63,7 +135,8 @@ void App::initWindow()
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
 		"OpenGL template",
-		glfwGetPrimaryMonitor(),
+		NULL, 
+		// glfwGetPrimaryMonitor(),
 		NULL);
 	if (window == NULL)
 	{
@@ -72,7 +145,6 @@ void App::initWindow()
 		exit(-1);
 	}
 
-	std::cout << mode->width << "x" << mode->height << "\n";
 	glfwMakeContextCurrent(window);
 
 	glewExperimental = true;
@@ -93,18 +165,49 @@ void App::initWindow()
 
 	glEnable(GL_CULL_FACE);
 }
+
+double currentTimeInMs()
+{
+	return glfwGetTime() * 1000;
+}
+
 void App::run()
 {
+	
+	double MS_PER_TICK = 1000 / 60;
+	double PROCESSED_TIME = currentTimeInMs();
+	double lastTime = glfwGetTime();
+	int nbFrames = 0;
 	while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE))
 	{
+		double currentTime = glfwGetTime();
+		nbFrames++;
+
+		char text[256];
+		
+		if (currentTime - lastTime >= 1.0)
+		{
+			sprintf(text,"%i fps", nbFrames );
+			nbFrames = 0;
+			lastTime += 1.0;
+		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		update();
+
+		while ((PROCESSED_TIME + MS_PER_TICK) < currentTimeInMs())
+		{
+			update();
+			PROCESSED_TIME += MS_PER_TICK;
+		}
+
 		render();
+
+		printText2D(text, 10, 10, 20);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
+	
+	cleanupText2D();
 	glfwTerminate();
 }

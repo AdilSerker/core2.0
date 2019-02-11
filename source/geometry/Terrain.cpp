@@ -83,7 +83,17 @@ float Terrain::sample(glm::vec2 pos)
     return (s0 * (1 - a0) + s1 * a0) * (1 - a1) + (s2 * (1 - a0) + s3 * a0) * a1;
 }
 
-Terrain::Terrain(float size, int divs, float smax, float tmax)
+Terrain::Terrain(float size, int divs, int range, float smax, float tmax) {
+    init(size, divs, range, smax, tmax);
+}
+
+Terrain::Terrain(float size, int divs, float smax, float tmax) {
+    int range = size / 4;
+
+    init(size, divs, range, smax, tmax);
+}
+
+void Terrain::init(float size, int divs, int range, float smax, float tmax)
 {
     std::vector<GLfloat> p(3 * (divs + 1) * (divs + 1));
     std::vector<GLfloat> n(3 * (divs + 1) * (divs + 1));
@@ -106,8 +116,6 @@ Terrain::Terrain(float size, int divs, float smax, float tmax)
         }
         data.push_back(row);
     }
-
-    float range = (size - 1) / 4;
 
     srand(time(NULL));
 
@@ -195,7 +203,7 @@ void Terrain::render(GLSLProgram *shader, glm::mat4 view, glm::mat4 proj)
 
     glBindVertexArray(vao);
 
-    shader->setUniform("Kd", 0.1f, 0.1f, 0.1f);
+    shader->setUniform("Kd", 0.0f, 0.0f, 0.0f);
     shader->setUniform("Ks", 0.9f, 0.9f, 0.9f);
     shader->setUniform("Ka", 0.1f, 0.1f, 0.1f);
     shader->setUniform("Shininess", 280.0f);
@@ -206,6 +214,7 @@ void Terrain::render(GLSLProgram *shader, glm::mat4 view, glm::mat4 proj)
     shader->setUniform("ModelViewMatrix", mv);
     shader->setUniform("NormalMatrix",
                        glm::mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2])));
+    shader->setUniform("ProjectionMatrix", proj);
     shader->setUniform("MVP", proj * mv);
 
     glDrawElements(GL_TRIANGLES, nVerts, GL_UNSIGNED_INT, 0);
