@@ -204,7 +204,6 @@ void App::run()
 
 		printText2D(text, 10, 10, 20);
 
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
