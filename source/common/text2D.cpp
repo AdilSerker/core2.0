@@ -7,9 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
-#include "shader.hpp"
 #include "texture.hpp"
-
+#include "GLSLProgram.h"
 #include "text2D.hpp"
 
 unsigned int Text2DTextureID;
@@ -19,6 +18,7 @@ unsigned int Text2DShaderID;
 unsigned int Text2DUniformID;
 
 GLuint vao;
+GLSLProgram shader;
 
 void initText2D(const char *texturePath)
 {
@@ -30,8 +30,12 @@ void initText2D(const char *texturePath)
 	glGenBuffers(1, &Text2DVertexBufferID);
 	glGenBuffers(1, &Text2DUVBufferID);
 
-	// Initialize Shader
-	Text2DShaderID = LoadShaders("./shaders/text.vert", "./shaders/text.frag");
+	shader.compileShader("./shaders/text.vert", GLSLShader::VERTEX);
+	shader.compileShader("./shaders/text.frag", GLSLShader::FRAGMENT);
+	shader.link();
+	shader.use();
+
+	Text2DShaderID = shader.getHandle();
 
 	// Initialize uniforms' IDs
 	Text2DUniformID = glGetUniformLocation(Text2DShaderID, "myTextureSampler");
@@ -82,7 +86,7 @@ void printText2D(const char *text, int x, int y, int size)
 	glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
 
 	// Bind shader
-	glUseProgram(Text2DShaderID);
+	shader.use();
 
 	// Bind texture
 	glActiveTexture(GL_TEXTURE0);
