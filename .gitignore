@@ -1,5 +1,4 @@
 *.o
 *.out
 .vscode
-network
 .DS_Store
