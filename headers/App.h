@@ -18,8 +18,6 @@ class App
 {
 	GLFWwindow *window;
 
-	CameraOrbit *camera;
-
 	Scene *scene;
 	Areas *area;
 
@@ -30,6 +28,10 @@ class App
 	void render();
 
   public:
+	bool isFreeCamera;
+	CameraOrbit *cameraOrbit;
+	Camera *camera;
+
 	App();
 	~App();
 	void init();
