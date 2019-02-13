@@ -29,7 +29,7 @@ void character(out vec3 position, out vec3 normal, out vec4 glVert)
     pos+=(VertexWeightVal.z*joints[int(VertexWeightIds.z)]*vec4(VertexPosition,1)).xyz;
     pos+=(VertexWeightVal.w*joints[int(VertexWeightIds.w)]*vec4(VertexPosition,1)).xyz;
     
-    position = pos;
+    position = vec3( ModelViewMatrix * vec4(pos,1.0) );
     
     vec3 norm=vec3(0);
     norm+=VertexWeightVal.x*mat3(joints[int(VertexWeightIds.x)])*VertexNormal;

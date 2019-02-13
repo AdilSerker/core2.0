@@ -40,7 +40,8 @@ vec3 ads( )
 }
 subroutine( shadeModelType )
 void character(out float fog, in float dist) {
-    fog = exp(-0.0 * 150);
+    fog = (Fog.maxDist - dist) /
+                      (Fog.maxDist - Fog.minDist);
 }
 subroutine( shadeModelType )
 void mesh(out float fog, in float dist) {
