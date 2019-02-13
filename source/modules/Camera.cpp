@@ -51,32 +51,32 @@ void Camera::computeMatricesFromInputs(GLFWwindow *window)
     glm::vec3 up = glm::cross(right, direction);
 
     // Move forward
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {
         position += direction * deltaTime * (speed + mouseSpeed);
     }
     // Move backward
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
     {
         position -= direction * deltaTime * speed;
     }
     // Strafe right
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
     {
         position += right * deltaTime * speed;
     }
     // Strafe left
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
     {
         position -= right * deltaTime * speed;
     }
     // Strafe up
-    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
     {
         position += up * deltaTime * speed;
     }
     // Strafe down
-    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
     {
         position -= up * deltaTime * speed;
     }
@@ -87,7 +87,7 @@ void Camera::computeMatricesFromInputs(GLFWwindow *window)
     ProjectionMatrix = glm::perspective(glm::radians(FoV), WINDOW_WIDTH * 1.0f / WINDOW_HEIGHT, 0.1f, 5000.0f);
     // Camera matrix
 
-    direct = glm::normalize(position + direction);
+    direct = direction;
     ViewMatrix = glm::lookAt(
         position,             // Camera is here
         position + direction, // and looks here : at the same position, plus "direction"
